@@ -40,7 +40,7 @@ myForm.addEventListener('submit', function () {
     myForm.reset();
   }
 
-  cityName.textContent = data.city;
+  cityName.textContent = titleCase(data.city);
   const xhr2 = new XMLHttpRequest();
   xhr2.open('GET', 'http://api.weatherapi.com/v1/current.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&aqi=no');
   xhr2.send();
@@ -50,13 +50,13 @@ myForm.addEventListener('submit', function () {
       error.textContent = 'City not found';
       error.style.color = 'RGB(255, 61, 77)';
       data.city = homeCity;
-      cityName.textContent = data.city;
+      cityName.textContent = titleCase(data.city);
       var inputToJSON = JSON.stringify(data);
       localStorage.setItem('javascript-local-storage', inputToJSON);
     } else { // show the result
 
       city = data.city;
-      cityName.textContent = capitalizeFirstLetter(city);
+      cityName.textContent = titleCase(city);
 
       cityWeather = JSON.parse(xhr2.responseText);
       currentCondition.textContent = cityWeather.current.condition.text;
@@ -86,10 +86,17 @@ xhr.send();
 
 xhr.onload = function () {
   if (xhr.status !== 200) { // analyze HTTP status of the response
+    error.textContent = 'City not found';
+    error.style.color = 'RGB(255, 61, 77)';
+    data.city = homeCity;
+    cityName.textContent = titleCase(data.city);
+    var inputToJSON = JSON.stringify(data);
+    localStorage.setItem('javascript-local-storage', inputToJSON);
   } else { // show the result
 
     city = data.city;
-    cityName.textContent = capitalizeFirstLetter(data.city);
+
+    cityName.textContent = titleCase(data.city);
 
     cityWeather = JSON.parse(xhr.responseText);
     currentCondition.textContent = cityWeather.current.condition.text;
@@ -118,8 +125,10 @@ function getDayOfWeek(date) {
     : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
 }
 
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+function titleCase(str) {
+  if ((str === null) || (str === '')) { return false; } else { str = str.toString(); }
+
+  return str.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 }
 
 // Set weather image
