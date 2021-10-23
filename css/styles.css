@@ -71,6 +71,10 @@ body {
 }
 
 .box2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: rgba(37, 35, 36, 0.9);
   width: 360px;
   height: 350px;
@@ -92,8 +96,18 @@ body {
   font-weight: 400;
   font-style: normal;
   text-align: center;
-  font-size: 1.6em;
-  margin: 20px;
+  font-size: 1.8em;
+  margin: 25px;
+  margin-top: 0;
+}
+
+.top-bot-table {
+  /* border: none; */
+  padding: 3px;
+}
+
+.mid-table {
+  /* border: none; */
 }
 
 .day-title {
@@ -145,20 +159,38 @@ body {
 }
 
 table tr td {
-  border: 1px solid white;
-  border-top: none;
-  color: gainsboro;
-  padding: 12px;
-  font-size: 1.2em;
+  background-color: rgb(202, 175, 158);
+  border-radius: 1px;
+
+  /*
+  background-image: linear-gradient(315deg, #af8c9d 0%, #8cacac 74%);
+  */
+  width: 200px;
+  min-width: 100%;
+  color: white;
+  font-size: 1.4em;
   font-family: myriad-pro-condensed, sans-serif;
   font-weight: 400;
-  letter-spacing: 1.1;
+  padding: 5px;
+}
+
+.td-wrap {
+  background-color: red;
+  width: 210px;
+  height: 100px;
 }
 
 table {
-  width: 100%;
+  width: 300px;
   justify-content: center;
   display: flex;
+  border-spacing: 15px;
+}
+
+.date {
+  color: rgba(37, 35, 36, 0.9);
+  margin-right: 10px;
+  padding-left: 10px;
 }
 
 .city {
@@ -171,7 +203,7 @@ table {
 }
 
 .location {
-  margin-top: 35px;
+  margin-top: 25px;
   position: relative;
   justify-content: center;
   align-items: center;
@@ -179,6 +211,7 @@ table {
 }
 
 #cityInput {
+  border-radius: 1px;
   font-size: 1.5em;
   font-family: myriad-pro-condensed, sans-serif;
   background-color: gainsboro;
@@ -214,7 +247,7 @@ input {
   font-family: myriad-pro-condensed, sans-serif;
   font-size: 0.9em;
   background-color: white;
-  border-radius: 0;
+  border-radius: 1px;
   border: 1px solid darkgray;
   text-align: center;
   vertical-align: middle;
@@ -256,66 +289,6 @@ input:active {
   box-shadow: rgba(50, 50, 93, 0.25) 0 2px 5px -1px, rgba(0, 0, 0, 0.3) 0 1px 3px -1px;
 }
 
-.sunny {
-  background-color: rgb(242, 222, 160);
-  color: rgb(64, 44, 26);
-}
-
-.cloudy {
-  background-color: rgb(242, 233, 216);
-  color: rgb(28, 25, 25);
-}
-
-.rainy {
-  background-color: rgb(83, 102, 115);
-  color: rgb(213, 229, 242);
-}
-
-.lightning {
-  background-color: rgb(23, 45, 64);
-  color: rgb(255, 240, 153);
-}
-
-.tornado {
-  background-color: rgb(42, 85, 89);
-  color: rgb(242, 240, 208);
-}
-
-.eclipse {
-  background-color: rgb(166, 64, 55);
-  color: rgb(64, 16, 29);
-}
-
-.fog {
-  background-color: rgb(208, 217, 216);
-  color: white;
-}
-
-.hail {
-  background-color: rgb(86, 86, 89);
-  color: rgb(197, 204, 217);
-}
-
-.sunSet {
-  background-color: rgb(22, 89, 130);
-  color: rgb(262, 110, 76);
-}
-
-.windy {
-  background-color: rgb(142, 158, 191);
-  color: rgb(240, 240, 242);
-}
-
-.snow {
-  background-color: white;
-  color: lightgrey;
-}
-
-.night {
-  background-color: rgb(42, 45, 64);
-  color: rgb(57, 62, 89);
-}
-
 .sub {
   font-size: 14px;
   color: rgb(89, 89, 89);
@@ -349,4 +322,9 @@ input:active {
 #currentWind,
 #currentTemp {
   margin-left: 3px;
+}
+
+.marker {
+  position: absolute;
+  left: -25px;
 }

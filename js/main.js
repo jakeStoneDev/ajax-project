@@ -1,15 +1,51 @@
 
+// DATA
 const data = {
   city: 'London',
-  homeCity: 'London'
+  homeCity: 'London',
+  date: '',
+  forecast1: '',
+  forecast2: ''
 };
 
 if (window.history.replaceState) {
   window.history.replaceState(null, null, window.location.href);
 }
 
+window.addEventListener('load', function () {
+  data.city = data.homeCity;
+  // set page to home city
+  const home = new XMLHttpRequest();
+  home.open('GET', 'http://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.homeCity + '&days=3&aqi=no&alerts=no');
+  home.send();
+  home.onload = function () {
+    cityWeather = JSON.parse(setForecast.responseText);
+    cityName.textContent = titleCase(data.city);
+
+    cityWeather = JSON.parse(setForecast.responseText);
+    currentCondition.textContent = cityWeather.current.condition.text;
+    currentWind.textContent = cityWeather.current.wind_mph;
+    currentHumidity.textContent = 'Humidity:' + ' ' + cityWeather.current.humidity;
+    currentTemp.textContent = cityWeather.current.temp_f;
+    fahrenheit.textContent = ' \u00B0' + 'F';
+    rainAmount.textContent = 'Rainfall:' + ' ' + cityWeather.current.precip_in + ' ';
+    inches.textContent = 'in';
+    setTimeAndDay(cityWeather.forecast.forecastday);
+    determineWeatherImage(cityWeather.current.condition.text);
+
+    forecastCondition1.textContent = cityWeather.forecast.forecastday[1].day.condition.text;
+    forecastCondition2.textContent = cityWeather.forecast.forecastday[2].day.condition.text;
+  };
+});
+
+// -
+// -
+// -
+// -
+// -
+
 // Constant variables
-const time = document.getElementById('time');
+const currentDate = document.getElementById('currentDate');
 const currentCondition = document.getElementById('currentCondition');
 const currentWind = document.getElementById('currentWind');
 const currentHumidity = document.getElementById('currentHumidity');
@@ -23,42 +59,86 @@ const myForm = document.getElementById('myForm');
 const homeCity = 'London';
 let cityWeather;
 const error = document.getElementById('error');
+const inputToJSON = JSON.stringify(data);
+const forecastDay1 = document.getElementById('date1');
+const forecastDay2 = document.getElementById('date2');
+let timeAndDay;
+const forecastCondition1 = document.getElementById('condition1');
+const forecastCondition2 = document.getElementById('condition2');
 
-// Setting Current Weather
+// -
+// -
+// -
+// -
+// -
+
 myForm.addEventListener('submit', function () {
   event.preventDefault();
   if (myForm.elements.cityInput.value === ' ') {
     error.textContent = 'Please enter a city name';
     error.style.color = 'RGB(255, 61, 77)';
     data.city = homeCity;
-    var inputToJSON = JSON.stringify(data);
     localStorage.setItem('javascript-local-storage', inputToJSON);
   } else {
     data.city = myForm.elements.cityInput.value;
-    inputToJSON = JSON.stringify(data);
-    localStorage.setItem('javascript-local-storage', inputToJSON);
     myForm.reset();
+
+    const setForecast = new XMLHttpRequest();
+    setForecast.open('GET', 'http://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&days=3&aqi=no&alerts=no');
+    setForecast.send();
+
+    setForecast.onload = function () {
+      if (setForecast.status !== 200) { // analyze HTTP status of the response
+        error.textContent = 'City not found';
+        error.style.color = 'RGB(255, 61, 77)';
+        data.city = homeCity;
+        cityName.textContent = titleCase(data.city);
+        localStorage.setItem('javascript-local-storage', inputToJSON);
+      } else { // show the result
+        error.textContent = '';
+
+        cityName.textContent = titleCase(data.city);
+
+        cityWeather = JSON.parse(setForecast.responseText);
+        currentCondition.textContent = cityWeather.current.condition.text;
+        currentWind.textContent = cityWeather.current.wind_mph;
+        currentHumidity.textContent = 'Humidity:' + ' ' + cityWeather.current.humidity;
+        currentTemp.textContent = cityWeather.current.temp_f;
+        fahrenheit.textContent = ' \u00B0' + 'F';
+        rainAmount.textContent = 'Rainfall:' + ' ' + cityWeather.current.precip_in + ' ';
+        inches.textContent = 'in';
+        setTimeAndDay(cityWeather.forecast.forecastday);
+        determineWeatherImage(cityWeather.current.condition.text);
+
+        forecastCondition1.textContent = cityWeather.forecast.forecastday[1].day.condition.text;
+        forecastCondition2.textContent = cityWeather.forecast.forecastday[2].day.condition.text;
+      }
+    };
   }
 
-  cityName.textContent = titleCase(data.city);
-  const xhr2 = new XMLHttpRequest();
-  xhr2.open('GET', 'http://api.weatherapi.com/v1/current.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&aqi=no');
-  xhr2.send();
+  // -
+  // -
+  // -
+  // -
+  // -
 
-  xhr2.onload = function () {
-    if (xhr2.status !== 200) { // analyze HTTP status of the response
+  const setConditions = new XMLHttpRequest();
+  setConditions.open('GET', 'http://api.weatherapi.com/v1/current.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&aqi=no');
+  setConditions.send();
+
+  setConditions.onload = function () {
+    if (setConditions.status !== 200) {
       error.textContent = 'City not found';
       error.style.color = 'RGB(255, 61, 77)';
       data.city = homeCity;
       cityName.textContent = titleCase(data.city);
       var inputToJSON = JSON.stringify(data);
       localStorage.setItem('javascript-local-storage', inputToJSON);
-    } else { // show the result
+    } else {
+      error.textContent = '';
 
-      city = data.city;
-      cityName.textContent = titleCase(city);
-
-      cityWeather = JSON.parse(xhr2.responseText);
+      cityName.textContent = titleCase(data.city);
+      cityWeather = JSON.parse(setConditions.responseText);
       currentCondition.textContent = cityWeather.current.condition.text;
       currentWind.textContent = cityWeather.current.wind_mph;
       currentHumidity.textContent = 'Humidity:' + ' ' + cityWeather.current.humidity;
@@ -66,39 +146,32 @@ myForm.addEventListener('submit', function () {
       fahrenheit.textContent = ' \u00B0' + 'F';
       rainAmount.textContent = 'Rainfall:' + ' ' + cityWeather.current.precip_in + ' ';
       inches.textContent = 'in';
-
-      const timeAndDay = cityWeather.location.localtime;
-      var split = timeAndDay.split(' ');
-      var date = split[0];
-      var dateSplit = date.split('-');
-      time.textContent = getDayOfWeek(split[0]) + ': ' + dateSplit[1] + '/' + dateSplit[2];
-
-      determineWeatherImage(cityWeather.current.condition.text);
     }
   };
 });
 
-let city = 'London';
+// -
+// -
+// -
+// -
+// -
+const setForecast = new XMLHttpRequest();
+setForecast.open('GET', 'http://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&days=3&aqi=no&alerts=no');
+setForecast.send();
 
-const xhr = new XMLHttpRequest();
-xhr.open('GET', 'http://api.weatherapi.com/v1/current.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&aqi=no');
-xhr.send();
-
-xhr.onload = function () {
-  if (xhr.status !== 200) { // analyze HTTP status of the response
+setForecast.onload = function () {
+  if (setForecast.status !== 200) { // analyze HTTP status of the response
     error.textContent = 'City not found';
     error.style.color = 'RGB(255, 61, 77)';
     data.city = homeCity;
     cityName.textContent = titleCase(data.city);
-    var inputToJSON = JSON.stringify(data);
     localStorage.setItem('javascript-local-storage', inputToJSON);
   } else { // show the result
-
-    city = data.city;
+    error.textContent = '';
 
     cityName.textContent = titleCase(data.city);
 
-    cityWeather = JSON.parse(xhr.responseText);
+    cityWeather = JSON.parse(setForecast.responseText);
     currentCondition.textContent = cityWeather.current.condition.text;
     currentWind.textContent = cityWeather.current.wind_mph;
     currentHumidity.textContent = 'Humidity:' + ' ' + cityWeather.current.humidity;
@@ -106,18 +179,18 @@ xhr.onload = function () {
     fahrenheit.textContent = ' \u00B0' + 'F';
     rainAmount.textContent = 'Rainfall:' + ' ' + cityWeather.current.precip_in + ' ';
     inches.textContent = 'in';
-
-    const timeAndDay = cityWeather.location.localtime;
-    var split = timeAndDay.split(' ');
-    var date = split[0];
-    var dateSplit = date.split('-');
-    time.textContent = getDayOfWeek(split[0]) + ': ' + dateSplit[1] + '/' + dateSplit[2];
-
+    setTimeAndDay(cityWeather.forecast.forecastday);
     determineWeatherImage(cityWeather.current.condition.text);
   }
 };
 
-// Utility functions
+// -
+// -
+// -
+// -
+// -
+
+// UTILITY FUNCTIONS
 function getDayOfWeek(date) {
   const dayOfWeek = new Date(date).getDay();
   return isNaN(dayOfWeek)
@@ -131,8 +204,34 @@ function titleCase(str) {
   return str.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 }
 
-// Set weather image
+function isolateDate(string) {
+  const newString = string.split('-');
+  const monthAndDay = newString[1] + '/' + newString[2];
+  return monthAndDay;
+}
 
+function setTimeAndDay(localWeatherArray) {
+  timeAndDay = localWeatherArray[0].date;
+  var dateSplit = timeAndDay.split('-');
+  currentDate.textContent = getDayOfWeek(dateSplit[0]) + ': ' + dateSplit[1] + '/' + dateSplit[2];
+
+  const day1 = isolateDate(localWeatherArray[1].date);
+  const day2 = isolateDate(localWeatherArray[2].date);
+  data.forecast1 = day1;
+
+  data.forecast2 = day2;
+  data.date = getDayOfWeek(dateSplit[0]) + ': ' + dateSplit[1] + '/' + dateSplit[2];
+  forecastDay1.textContent = data.forecast1;
+  forecastDay2.textContent = data.forecast2;
+  localStorage.setItem('javascript-local-storage', inputToJSON);
+}
+// -
+// -
+// -
+// -
+// -
+
+// Set weather image
 function determineWeatherImage(condition) {
   var split = condition.split(' ');
   for (var i = 0; i < split.length; i++) {
@@ -174,3 +273,43 @@ function determineWeatherImage(condition) {
     }
   }
 }
+
+// -
+// -
+// -
+// -
+// -
+
+/*
+previousUserInput = JSON.parse(previousUserInputJSON);
+data.city = previousUserInput.city;
+console.log('outside of everything', data.city);
+const xhrForecast = new XMLHttpRequest();
+xhrForecast.open('GET', 'http://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&days=7&aqi=no&alerts=no');
+xhrForecast.send();
+
+xhrForecast.onload = function () {
+  if (xhrForecast.status !== 200) { // analyze HTTP status of the response
+    console.log(`Error ${xhrForecast.status}: ${xhrForecast.statusText}`); // e.g. 404: Not Found
+  } else { // show the result
+    console.log('xhrForecast, data.city', data.city);
+    const weekForecast = JSON.parse(xhrForecast.responseText);
+
+    timeAndDay = weekForecast.location.localtime;
+    var split = timeAndDay.split(' ');
+    var date = split[0];
+    var dateSplit = date.split('-');
+    time.textContent = getDayOfWeek(split[0]) + ': ' + dateSplit[1] + '/' + dateSplit[2];
+
+    const day1 = isolateDate(weekForecast.forecast.forecastday[1].date);
+    const day2 = isolateDate(weekForecast.forecast.forecastday[2].date);
+    data.forecast1 = day1;
+    console.log('forecast day1:', data.forecast1);
+    data.forecast2 = day2;
+    console.log('forecast day2:', data.forecast2);
+    localStorage.setItem('javascript-local-storage', inputToJSON);
+    forecastDay1.textContent = data.forecast1;
+    forecastDay2.textContent = data.forecast2;
+  }
+};
+*/
