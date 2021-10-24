@@ -34,7 +34,9 @@ const forecastCondition1 = document.getElementById('condition1');
 const forecastCondition2 = document.getElementById('condition2');
 let dayNum;
 const weekdayTitle = document.getElementById('weekday');
-
+const tile = document.getElementById('tile');
+const backTile = document.getElementById('backTile');
+const hourlyTab = document.getElementById('tab-hourly');
 // -
 // -
 // -
@@ -308,3 +310,25 @@ function determineWeatherImage(condition) {
     }
   }
 }
+
+// -
+// -
+// -
+// -
+// -
+
+// TILE FLIP
+var tileBack = false;
+hourlyTab.addEventListener('click', function () {
+  if (tileBack === true) {
+    tileBack = false;
+    hourlyTab.textContent = 'View: Current';
+    backTile.style.display = 'none';
+    tile.style.display = 'flex';
+  } else {
+    hourlyTab.textContent = 'View: Hourly';
+    tileBack = true;
+    backTile.style.display = 'flex';
+    tile.style.display = 'none';
+  }
+});
