@@ -12,6 +12,35 @@ if (window.history.replaceState) {
   window.history.replaceState(null, null, window.location.href);
 }
 
+// PAGE VARIABLES
+const currentDate = document.getElementById('currentDate');
+const currentCondition = document.getElementById('currentCondition');
+const currentWind = document.getElementById('currentWind');
+const currentHumidity = document.getElementById('currentHumidity');
+const currentTemp = document.getElementById('currentTemp');
+const fahrenheit = document.getElementById('fheit');
+const rainAmount = document.getElementById('currentRain');
+const inches = document.getElementById('inches');
+const image = document.getElementById('circle');
+const cityName = document.getElementById('cityName');
+const myForm = document.getElementById('myForm');
+const homeCity = 'London';
+let cityWeather;
+const error = document.getElementById('error');
+const inputToJSON = JSON.stringify(data);
+const forecastDay1 = document.getElementById('date1');
+const forecastDay2 = document.getElementById('date2');
+const forecastCondition1 = document.getElementById('condition1');
+const forecastCondition2 = document.getElementById('condition2');
+let dayNum;
+const weekdayTitle = document.getElementById('weekday');
+
+// -
+// -
+// -
+// -
+// -
+
 window.addEventListener('load', function () {
   data.city = data.homeCity;
   // set page to home city
@@ -35,36 +64,15 @@ window.addEventListener('load', function () {
 
     forecastCondition1.textContent = cityWeather.forecast.forecastday[1].day.condition.text;
     forecastCondition2.textContent = cityWeather.forecast.forecastday[2].day.condition.text;
+
+    currentDate.textContent = cityWeather.location.localtime;
+    const dayOfWeek = new Date(cityWeather.location.localtime);
+    dayNum = dayOfWeek.getDay();
+    transformToDay(dayNum);
+    weekdayTitle.textContent = dayNum;
+
   };
 });
-
-// -
-// -
-// -
-// -
-// -
-
-// Constant variables
-const currentDate = document.getElementById('currentDate');
-const currentCondition = document.getElementById('currentCondition');
-const currentWind = document.getElementById('currentWind');
-const currentHumidity = document.getElementById('currentHumidity');
-const currentTemp = document.getElementById('currentTemp');
-const fahrenheit = document.getElementById('fheit');
-const rainAmount = document.getElementById('currentRain');
-const inches = document.getElementById('inches');
-const image = document.getElementById('circle');
-const cityName = document.getElementById('cityName');
-const myForm = document.getElementById('myForm');
-const homeCity = 'London';
-let cityWeather;
-const error = document.getElementById('error');
-const inputToJSON = JSON.stringify(data);
-const forecastDay1 = document.getElementById('date1');
-const forecastDay2 = document.getElementById('date2');
-let timeAndDay;
-const forecastCondition1 = document.getElementById('condition1');
-const forecastCondition2 = document.getElementById('condition2');
 
 // -
 // -
@@ -112,6 +120,11 @@ myForm.addEventListener('submit', function () {
 
         forecastCondition1.textContent = cityWeather.forecast.forecastday[1].day.condition.text;
         forecastCondition2.textContent = cityWeather.forecast.forecastday[2].day.condition.text;
+        currentDate.textContent = cityWeather.location.localtime;
+        const dayOfWeek = new Date(cityWeather.location.localtime);
+        dayNum = dayOfWeek.getDay();
+        transformToDay(dayNum);
+        weekdayTitle.textContent = dayNum;
       }
     };
   }
@@ -146,6 +159,12 @@ myForm.addEventListener('submit', function () {
       fahrenheit.textContent = ' \u00B0' + 'F';
       rainAmount.textContent = 'Rainfall:' + ' ' + cityWeather.current.precip_in + ' ';
       inches.textContent = 'in';
+
+      currentDate.textContent = cityWeather.location.localtime;
+      const dayOfWeek = new Date(cityWeather.location.localtime);
+      dayNum = dayOfWeek.getDay();
+      transformToDay(dayNum);
+      weekdayTitle.textContent = dayNum;
     }
   };
 });
@@ -181,9 +200,14 @@ setForecast.onload = function () {
     inches.textContent = 'in';
     setTimeAndDay(cityWeather.forecast.forecastday);
     determineWeatherImage(cityWeather.current.condition.text);
+
+    currentDate.textContent = cityWeather.location.localtime;
+    const dayOfWeek = new Date(cityWeather.location.localtime);
+    dayNum = dayOfWeek.getDay();
+    transformToDay(dayNum);
+    weekdayTitle.textContent = dayNum;
   }
 };
-
 // -
 // -
 // -
@@ -191,11 +215,23 @@ setForecast.onload = function () {
 // -
 
 // UTILITY FUNCTIONS
-function getDayOfWeek(date) {
-  const dayOfWeek = new Date(date).getDay();
-  return isNaN(dayOfWeek)
-    ? null
-    : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
+function transformToDay() {
+  if (dayNum === 0) {
+    dayNum = '(Sunday)';
+  } else if (dayNum === 1) {
+    dayNum = '(Monday)';
+  } else if (dayNum === 2) {
+    dayNum = '(Tuesday)';
+  } else if (dayNum === 3) {
+    dayNum = '(Wednesday)';
+  } else if (dayNum === 4) {
+    dayNum = '(Thursday)';
+  } else if (dayNum === 5) {
+    dayNum = '(Friday)';
+  } else if (dayNum === 6) {
+    dayNum = '(Saturday)';
+  }
+  return dayNum;
 }
 
 function titleCase(str) {
@@ -211,16 +247,15 @@ function isolateDate(string) {
 }
 
 function setTimeAndDay(localWeatherArray) {
-  timeAndDay = localWeatherArray[0].date;
-  var dateSplit = timeAndDay.split('-');
-  currentDate.textContent = getDayOfWeek(dateSplit[0]) + ': ' + dateSplit[1] + '/' + dateSplit[2];
-
   const day1 = isolateDate(localWeatherArray[1].date);
   const day2 = isolateDate(localWeatherArray[2].date);
   data.forecast1 = day1;
-
+  currentDate.textContent = cityWeather.location.localtime;
+  const dayOfWeek = new Date(cityWeather.location.localtime);
+  dayNum = dayOfWeek.getDay();
+  transformToDay(dayNum);
+  weekdayTitle.textContent = dayNum;
   data.forecast2 = day2;
-  data.date = getDayOfWeek(dateSplit[0]) + ': ' + dateSplit[1] + '/' + dateSplit[2];
   forecastDay1.textContent = data.forecast1;
   forecastDay2.textContent = data.forecast2;
   localStorage.setItem('javascript-local-storage', inputToJSON);

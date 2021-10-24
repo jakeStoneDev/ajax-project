@@ -39,7 +39,7 @@ body {
 
 .weather-row2 {
   display: flex;
-  margin-top: 10%;
+  margin-top: 5%;
   width: 100%;
   justify-content: space-evenly;
 }
@@ -112,7 +112,18 @@ body {
 
 .day-title {
   font-size: 1.8em;
-  margin-top: 20px;
+  margin-top: 15px;
+  font-family: myriad-pro-condensed, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-align: center;
+  color: rgba(24, 25, 26, 0.8);
+  text-shadow: none;
+}
+
+#weekday {
+  font-size: 1.3em;
+  margin-top: 8px;
   font-family: myriad-pro-condensed, sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -126,7 +137,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 50px;
+  margin-top: 7%;
 }
 
 .forcast-info-div {
