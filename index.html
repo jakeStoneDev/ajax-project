@@ -1,4 +1,4 @@
-<!DOCTYPE <!doctype html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -20,7 +20,7 @@
 		    	<form class="formCentered" id="myForm">
 		    		<div>
 						<input id="cityInput" type="search" name="city" placeholder="City" required>
-						<input type="submit" name="inputSubmit">
+						<input type="submit" name="inputSubmit" value="Search">
 				    </div>
 					<span id="error"></span>
 				</form>
@@ -29,7 +29,8 @@
 	    <div class="weather-row">
 	    	<div class="col-half">
 	    		<div class="box1">
-	    			<h1 id="time" class="day-title"></h1>
+	    			<h1 id="currentDate" class="day-title"></h1>
+            <h2 id="weekday"></h2>
 	    			<div class="img-cont">
 		    		<div id="circle" class="circle">
 		    		</div>
@@ -50,26 +51,17 @@
 	    	</div>
 	    	<div class="col-half">
 	    		<div class="box2">
-	    			<h1 class="forecast-title">Forecast</h1>
+	    			<h1 class="forecast-title">2-Day Forecast</h1>
 	    			<table>
 	    				<tr>
-	    					<td>M: 78F Cloudy</td>
-	    					<td>F: 78F Cloudy</td>
+	    					<td><span class="date" id="date1"></span><span id="condition1"></span></td>
 	    				</tr>
 	    				<tr>
-	    					<td>T: 78F Cloudy</td>
-	    					<td>S: 78F Cloudy</td>
-	    				</tr>
-	    				<tr>
-	    					<td>W: 78F Cloudy</td>
-	    					<td>S: 78F Cloudy</td>
-	    				</tr>
-	    				<tr>
-	    					<td class="bottomless">Th: 78F Cloudy</td>
+	    					<td><span class="date" id="date2"></span><span id="condition2"></span></td>
 	    				</tr>
 	    			</table>
 	    			<div id="location" class="location">
-						<img width="25px" height="25px" src="images/location.svg">
+						<img class="marker" width="25px" height="25px" src="images/location.svg">
 						<h1 id="cityName" class="city">London</h1>
 					</div>
 	    	</div>
