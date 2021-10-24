@@ -68,9 +68,42 @@ body {
   border-radius: 25px;
   z-index: 2;
   box-shadow: rgba(0, 0, 0, 0.16) 0 3px 6px, rgba(0, 0, 0, 0.23) 0 3px 6px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.backTile {
+  background-color: white;
+  width: 400px;
+  height: 400px;
+  border-radius: 25px;
+  z-index: 2;
+  box-shadow: rgba(0, 0, 0, 0.16) 0 3px 6px, rgba(0, 0, 0, 0.23) 0 3px 6px;
+  position: relative;
+  display: none;
+  flex-direction: column;
+}
+
+.backTile:hover {
+  cursor: pointer;
+}
+
+#hourly {
+  text-align: center;
+  position: relative;
+}
+
+.box1:hover {
+  cursor: pointer;
+}
+
+.edge:hover {
+  cursor: pointer;
 }
 
 .box2 {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -225,7 +258,7 @@ table {
   border-radius: 1px;
   font-size: 1.5em;
   font-family: myriad-pro-condensed, sans-serif;
-  background-color: gainsboro;
+  background-color: rgba(37, 35, 36, 0.9);
   color: darkgray;
   outline: none;
   padding-left: 20px;
@@ -262,21 +295,22 @@ input {
   border: 1px solid darkgray;
   text-align: center;
   vertical-align: middle;
-  color: darkgray;
+  color: rgba(37, 35, 36, 0.9);
 }
 
 input:focus::placeholder {
-  color: gainsboro;
+  color: gba(37, 35, 36, 0.9);
 }
 
 input:hover {
   cursor: pointer;
-  background-color: gainsboro;
+  background-color: rgb(202, 175, 158);
+  color: rgba(37, 35, 36, 0.9);
 }
 
 input:active {
-  background-color: darkgray;
-  color: black;
+  background-color: rgb(202, 175, 158);
+  color: rgba(37, 35, 36, 0.9);
 }
 
 .formCentered {
@@ -338,4 +372,27 @@ input:active {
 .marker {
   position: absolute;
   left: -25px;
+}
+
+#tab-hourly {
+  font-size: 1.2em;
+  text-align: center;
+  font-family: myriad-pro-condensed, sans-serif;
+  color: white;
+  position: absolute;
+  top: 0;
+  right: 30px;
+  width: 82px;
+  height: 22px;
+  border-radius: 0 0 4px 4px;
+  background-color: darkgray;
+  padding: 1px;
+}
+
+#tab-hourly:hover {
+  cursor: pointer;
+}
+
+* {
+  -webkit-user-select: none;
 }
