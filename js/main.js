@@ -72,7 +72,7 @@ window.addEventListener('load', function () {
     dayNum = dayOfWeek.getDay();
     transformToDay(dayNum);
     weekdayTitle.textContent = dayNum;
-
+    updateHourly(cityWeather);
   };
 });
 
@@ -127,6 +127,7 @@ myForm.addEventListener('submit', function () {
         dayNum = dayOfWeek.getDay();
         transformToDay(dayNum);
         weekdayTitle.textContent = dayNum;
+        updateHourly(cityWeather);
       }
     };
   }
@@ -167,6 +168,7 @@ myForm.addEventListener('submit', function () {
       dayNum = dayOfWeek.getDay();
       transformToDay(dayNum);
       weekdayTitle.textContent = dayNum;
+      updateHourly(cityWeather);
     }
   };
 });
@@ -208,6 +210,7 @@ setForecast.onload = function () {
     dayNum = dayOfWeek.getDay();
     transformToDay(dayNum);
     weekdayTitle.textContent = dayNum;
+    updateHourly(cityWeather);
   }
 };
 // -
@@ -217,6 +220,16 @@ setForecast.onload = function () {
 // -
 
 // UTILITY FUNCTIONS
+function updateHourly(cityWeather) {
+  for (var i = 0; i < 25; i++) {
+    var hour = document.getElementById(i);
+    if (!hour) {
+      continue;
+    }
+    hour.textContent = cityWeather.forecast.forecastday[0].hour[i - 1].condition.text;
+  }
+}
+
 function transformToDay() {
   if (dayNum === 0) {
     dayNum = '(Sunday)';
@@ -332,3 +345,20 @@ hourlyTab.addEventListener('click', function () {
     tile.style.display = 'none';
   }
 });
+
+// SETTING HOURLY
+
+const setHour = new XMLHttpRequest();
+setHour.open('GET', 'http://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&days=3&aqi=no&alerts=no');
+setHour.send();
+
+setHour.onload = function () {
+  cityWeather = JSON.parse(setHour.responseText);
+  for (var i = 0; i < 25; i++) {
+    var hour = document.getElementById(i);
+    if (!hour) {
+      continue;
+    }
+    hour.textContent = cityWeather.forecast.forecastday[0].hour[i - 1].condition.text;
+  }
+};
