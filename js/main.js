@@ -47,7 +47,7 @@ window.addEventListener('load', function () {
   data.city = data.homeCity;
   // set page to home city
   const home = new XMLHttpRequest();
-  home.open('GET', 'http://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.homeCity + '&days=3&aqi=no&alerts=no');
+  home.open('GET', 'https://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.homeCity + '&days=3&aqi=no&alerts=no');
   home.send();
   home.onload = function () {
     cityWeather = JSON.parse(setForecast.responseText);
@@ -94,7 +94,7 @@ myForm.addEventListener('submit', function () {
     myForm.reset();
 
     const setForecast = new XMLHttpRequest();
-    setForecast.open('GET', 'http://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&days=3&aqi=no&alerts=no');
+    setForecast.open('GET', 'https://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&days=3&aqi=no&alerts=no');
     setForecast.send();
 
     setForecast.onload = function () {
@@ -139,7 +139,7 @@ myForm.addEventListener('submit', function () {
   // -
 
   const setConditions = new XMLHttpRequest();
-  setConditions.open('GET', 'http://api.weatherapi.com/v1/current.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&aqi=no');
+  setConditions.open('GET', 'https://api.weatherapi.com/v1/current.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&aqi=no');
   setConditions.send();
 
   setConditions.onload = function () {
@@ -179,7 +179,7 @@ myForm.addEventListener('submit', function () {
 // -
 // -
 const setForecast = new XMLHttpRequest();
-setForecast.open('GET', 'http://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&days=3&aqi=no&alerts=no');
+setForecast.open('GET', 'https://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&days=3&aqi=no&alerts=no');
 setForecast.send();
 
 setForecast.onload = function () {
@@ -349,7 +349,7 @@ hourlyTab.addEventListener('click', function () {
 // SETTING HOURLY
 
 const setHour = new XMLHttpRequest();
-setHour.open('GET', 'http://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&days=3&aqi=no&alerts=no');
+setHour.open('GET', 'https://api.weatherapi.com/v1/forecast.json?key=a2afe3df405444feb8d30816211310&q=' + data.city + '&days=3&aqi=no&alerts=no');
 setHour.send();
 
 setHour.onload = function () {
